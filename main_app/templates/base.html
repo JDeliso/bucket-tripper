@@ -22,7 +22,30 @@
 </head>
 <body>
 
-    Hello World
+    <div class="ui top fixed menu">
+        <div class="header item">
+            Bucket Tripper
+        </div>
+        <a class="item">
+            Blog
+        </a>
+        <a class="item">
+            Follow
+        </a>
+        <a class="item">
+            Locations
+        </a>
+        <div class="right menu">
+
+            {% comment %} {% if user.is_authenticated %}
+            <a class="item" href="/myprofile/"><span style="text-transform:uppercase">{{ user.profile.name }}</span></a>
+            <a class="item" href="{% url 'logout' %}">LOGOUT</a>
+            {% else %} {% endcomment %}
+            <a class="item" id="login" type="button">LOG-IN</a>
+            <a class="item" id="signup" type="button">SIGN-UP</a>
+
+        </div>
+    </div>
 
 </body>
 </html>
