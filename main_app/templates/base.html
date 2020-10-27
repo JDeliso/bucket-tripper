@@ -12,6 +12,12 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
     {% comment %} <link rel="stylesheet" href="{% static 'styles/main.css' %}"> {% endcomment %}
 
     {% block custom_js %}
@@ -37,15 +43,103 @@
         </a>
         <div class="right menu">
 
-            {% comment %} {% if user.is_authenticated %}
-            <a class="item" href="/myprofile/"><span style="text-transform:uppercase">{{ user.profile.name }}</span></a>
-            <a class="item" href="{% url 'logout' %}">LOGOUT</a>
-            {% else %} {% endcomment %}
-            <a class="item" id="login" type="button">LOG-IN</a>
-            <a class="item" id="signup" type="button">SIGN-UP</a>
+            {% if user.is_authenticated %}
+                <a class="item" href="/myprofile/"><span style="text-transform:uppercase">{{ user.username }}</span></a>
+                <a class="item" href="{% url 'logout' %}">LOGOUT</a>
+            {% else %} 
+                <a class="item" id="login" type="button">LOG-IN</a>
+                <a class="item" id="signup" type="button">SIGN-UP</a>
+
+                <script>
+                    $(function(){
+                        $("#login").click(function(){
+                        $(".login").modal('show');
+                        });
+                        $(".login").modal({
+                            closable: true
+                        });
+                    });
+                    $(function(){
+                        $("#signup").click(function(){
+                        $(".signup").modal('show');
+                        });
+                        $(".signup").modal({
+                            closable: true
+                        });
+                    });
+                </script>
+            {% endif %}
 
         </div>
     </div>
+
+    <div class="ui modal login" style="padding: 10px;">
+        HI
+    </div>
+
+
+
+    <div class="ui modal signup" style="padding: 10px;">
+        
+        <form class="ui small form" action="{% url 'signup' %}" method="POST">
+            <h2 class="ui modal-header">Sign-up</h2>
+            {% csrf_token %}
+                <div class="two fields">
+                    <div class="field">
+                        <label>Username</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="field">
+                        <label>Email</label>
+                        <input type="text" name="email" required>
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" required>
+                    </div>
+                    <div class="field">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="field">
+                    <label>Re-Enter Password</label>
+                    <input type="password" name="password2" required>
+                </div>
+                <button class="ui button" type="submit" style="margin:10px;">Submit</button>
+        </form>
+
+    </div>
+
+        <div class="ui modal login" style="padding: 10px;">
+        
+        <form class="ui small form" action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        <h2 class='ui modal-header'>Log-in</h2>
+            <div class="ui modal-body">
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="username">
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" name="password">
+                </div>
+                <button class="ui button" type="submit" style="margin:10px;">Sign-in</button>
+            </div>
+        </form>
+
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
 
 </body>
 </html>

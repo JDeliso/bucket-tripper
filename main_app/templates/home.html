@@ -4,3 +4,62 @@
 {% block title %}
     <title>Bucket Tripper</title>
 {% endblock %}
+
+{%block content%}
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+    type="text/css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+    <div id="map" style="margin-top: 30px;"></div>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamRlbGlzbyIsImEiOiJja2c2cG9raW0wMjUzMzRsaHBkcjR6Z3R5In0.b7ytY30b9YXV5oQqsuuPeg';
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [0, 0],
+            zoom: 2
+        });
+        
+        map.addControl(
+            new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                marker: {
+                    color: 'red'
+                },
+                mapboxgl: mapboxgl
+                })
+            );
+        
+
+    </script>
+
+
+{% endblock %}
