@@ -12,7 +12,30 @@ from .models import *
 # Create your views here.
 # home view
 def home(request):
+    user = request.user
+    profile = user.profile
+    maps = profile.map_set.all()
+    current_map = maps[0]
+    context = {'maps': maps, 'current_map': current_map}
+    return render(request, 'home.html', context)
+
+def splash(request):
     return render(request, 'home.html')
+
+def create_location(request, map_id):
+    current_map = Map.objects.get(id=map_id)
+
+    if request.method == "POST":
+        location_form = Location_Form(request.POST)
+        print(location_form.errors)
+
+        if location_form.is_valid():
+            new_location = location_form.save(commit=False)
+            new_location.map_id = map_id
+
+            new_location.save()
+        return redirect('home')
+
 
 def signup(request):
     # if post
@@ -47,6 +70,9 @@ def signup(request):
                     new_profile = profile_form.save(commit = False)
                     new_profile.user_id = user.id
                     new_profile.save()
+                    new_map = Map.objects.create(
+                        user_id = user.id
+                    )
 
                     login(request, user)
 

@@ -12,3 +12,13 @@ class Profile_Form(ModelForm):
         model = Profile
         fields = ('user', 'join_date')
 
+class Map_Form(ModelForm):
+    class Meta:
+        model = Map
+        fields = ('user', 'name', 'description')
+
+class Location_Form(ModelForm):
+    class Meta:
+        model = Location
+        fields = ('name', 'description', 'long', 'lat')
+

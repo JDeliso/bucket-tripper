@@ -14,8 +14,8 @@ class Profile(models.Model):
         return self.user.username
 
 class Map(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=1000)
+    name = models.CharField(max_length=100, default="default")
+    description = models.TextField(max_length=1000, default="Your first map!")
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
 class Location(models.Model):
@@ -23,8 +23,7 @@ class Location(models.Model):
     description = models.TextField(max_length=2000)
     long = models.DecimalField(decimal_places=9, max_digits=20)
     lat = models.DecimalField(decimal_places=9, max_digits=20)
-    user = models.ForeignKey(Map, on_delete=models.CASCADE)
-
+    map = models.ForeignKey(Map, on_delete=models.CASCADE)
 
 
 
