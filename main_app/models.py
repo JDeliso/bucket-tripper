@@ -21,9 +21,9 @@ class Map(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=2000)
-    long = models.DecimalField(decimal_places=9, max_digits=20)
-    lat = models.DecimalField(decimal_places=9, max_digits=20)
-    map = models.ForeignKey(Map, on_delete=models.CASCADE)
+    long = models.DecimalField(decimal_places=50, max_digits=60)
+    lat = models.DecimalField(decimal_places=50, max_digits=60)
+    map_id = models.ForeignKey(Map, on_delete=models.CASCADE)
 
 
 

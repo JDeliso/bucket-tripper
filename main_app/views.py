@@ -10,7 +10,12 @@ from .forms import *
 from .models import *
 
 # Create your views here.
+# splash view
+def splash(request):
+    return render(request, 'home.html')
+
 # home view
+@login_required
 def home(request):
     user = request.user
     profile = user.profile
@@ -19,9 +24,8 @@ def home(request):
     context = {'maps': maps, 'current_map': current_map}
     return render(request, 'home.html', context)
 
-def splash(request):
-    return render(request, 'home.html')
-
+# create a new location
+@login_required
 def create_location(request, map_id):
     current_map = Map.objects.get(id=map_id)
 
@@ -31,12 +35,12 @@ def create_location(request, map_id):
 
         if location_form.is_valid():
             new_location = location_form.save(commit=False)
-            new_location.map_id = map_id
+            new_location.map_id = current_map
 
             new_location.save()
         return redirect('home')
 
-
+# register
 def signup(request):
     # if post
     if request.method == "POST":

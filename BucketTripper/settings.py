@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'BucketTripper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'buckettripperdb',
+        'NAME': 'buckettripperv2',
     }
 }
 
