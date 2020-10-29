@@ -15,7 +15,7 @@ class Profile_Form(ModelForm):
 class Map_Form(ModelForm):
     class Meta:
         model = Map
-        fields = ('user', 'name', 'description')
+        fields = ('name', 'description')
 
 class Location_Form(ModelForm):
     class Meta:

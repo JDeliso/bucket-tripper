@@ -40,6 +40,22 @@ def create_location(request, map_id):
             new_location.save()
         return redirect('home')
 
+@login_required
+def create_map(request):
+    if request.method == "POST":
+
+        map_form = Map_Form(request.POST)
+        print(map_form.errors)
+
+        if map_form.is_valid():
+            new_map = map_form.save(commit=False)
+            new_map.user_id = request.user.id
+
+        new_map.save()
+
+        return redirect('home')
+    
+
 # register
 def signup(request):
     # if post

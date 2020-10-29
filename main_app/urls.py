@@ -8,4 +8,6 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('accounts/signup', views.signup, name='signup'),
     path('location/create/<int:map_id>', views.create_location, name='create_location'),
+    path('maps/create/', views.create_map, name="create_map"),
+    
 ]
