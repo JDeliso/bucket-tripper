@@ -20,7 +20,7 @@
 
         <div class ="ui twelve wide centered grid">
 
-                <div class="one wide column" style="margin-top: 60px; position: fixed; left: 0"> 
+                <div class="ten wide column" style="margin-top: 60px; position: fixed; left: 0"> 
                     <div class="ui vertical menu">
 
                         {% for map in maps %}
@@ -33,12 +33,12 @@
                 </div>
 
 
-                <div class="ten wide column" style="margin-top: 30px;">
+                <div class="eleven wide column" style="margin-top: 30px;">
                     <div id="map" style="min-height: 95vh; margin-top: 20px;"></div>
                 </div>
 
 
-                <div class="three wide column" style="margin-top: 60px; margin-left: 10px;">
+                <div class="two wide column" style="margin-top: 60px; margin-left: 10px;">
                     <h5>{{current_map.description}}</h5>
                 </div>
 
@@ -98,6 +98,7 @@
                     properties: {
                         title: '{{location.name}}',
                         description: "{{location.description}}",
+                        id: '{{location.id}}'
                     }
                 },
                 {% endfor %}
@@ -114,7 +115,7 @@
             new mapboxgl.Marker(el)
                 .setLngLat(marker.geometry.coordinates)
                 .setPopup(new mapboxgl.Popup({ offset: 25 })
-                .setHTML('<h1>' + marker.properties.title + '</h1><p>' + marker.properties.description + '</p>'))
+                .setHTML('<h1>' + marker.properties.title + '</h1><p>' + marker.properties.description + `</p><div class="ui compact menu"><div class="ui simple dropdown item">Add to map<i class="dropdown icon"></i><div class="menu">{% for map in yourmaps %}<form type="hidden" method="POST" action="/location/${marker.properties.id}/{{map.id}}">{% csrf_token %} <input type="submit" value="{{map.name}}" class="ui item"></input></form>{%endfor%} </div></div>`))
                 .addTo(map);
         });
 

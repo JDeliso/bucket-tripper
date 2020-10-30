@@ -20,11 +20,11 @@
 
         <div class ="ui twelve wide centered grid">
 
-                <div class="one wide column" style="margin-top: 60px; position: fixed; left: 0"> 
+                <div class="two wide column" style="margin-top: 60px; position: fixed; left: 0; min-width:10vh;"> 
                     <div class="ui vertical menu">
 
                         {% for map in maps %}
-                            <a class = "item">
+                            <a class = "item" href="/home/{{map.id}}">
                                 {{ map.name }}
                             </a>
                         {% endfor %}
@@ -95,11 +95,15 @@
             zoom: 1.3,
             renderWorldCopies: true,
             scrollZoom: false,
+            maxZoom: 3,
         });
 
         var geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
-            mapboxgl: mapboxgl
+            mapboxgl: mapboxgl,
+            marker: {
+                color: 'red'
+            }
             })
 
 
@@ -162,15 +166,6 @@
 
         //delete modal
         {% for location in locations %}
-            $(function(){
-                $("#delete{{location.id}}").click(function(){
-                    $(".delete{{location.id}}").modal('show');
-                });
-                $(".delete{{location.id}}").modal({
-                    closable: true
-                });
-            });
-
         // edit modal
             $(function(){
                 $("#edit{{location.id}}").click(function(){

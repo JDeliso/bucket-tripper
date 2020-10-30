@@ -25,13 +25,25 @@ def home(request):
     context = {'maps': maps, 'current_map': current_map, 'profile': profile, 'locations': locations}
     return render(request, 'home.html', context)
 
+@login_required
+def homemap(request, map_id):
+    user = request.user
+    profile = user.profile
+    maps = profile.map_set.all()
+    current_map = Map.objects.get(id=map_id)
+    locations = current_map.location_set.all()
+    context = {'maps': maps, 'current_map': current_map, 'profile': profile, 'locations': locations}
+    return render(request, 'home.html', context)
+
+@login_required
 def view_map(request, map_id, profile_name):
     profile = User.objects.get(username=profile_name)
     profile = Profile.objects.get(user_id=profile.id)
     current_map = Map.objects.get(id=map_id)
     profile_maps = profile.map_set.all()
     locations = current_map.location_set.all()
-    context = {'maps': profile_maps, 'current_map': current_map, 'profile': profile, 'locations': locations}
+    your_maps = request.user.profile.map_set.all()
+    context = {'maps': profile_maps, 'current_map': current_map, 'profile': profile, 'locations': locations, 'yourmaps': your_maps}
     return render(request, 'view.html', context)
 
 # create a new location
@@ -48,7 +60,7 @@ def create_location(request, map_id):
             new_location.map_id = current_map
 
             new_location.save()
-        return redirect('home')
+        return redirect('homemap', current_map.id)
 
 @login_required
 def delete_location(request, location_id):
@@ -74,6 +86,22 @@ def create_map(request):
         new_map.save()
 
         return redirect('home')
+
+@login_required
+def steal_location(request, location_id, map_id):
+    if request.method == "POST":
+        location = Location.objects.get(id=location_id)
+        new_map = Map.objects.get(id=map_id)
+        new_location = Location.objects.create(
+            name = location.name,
+            description = location.description,
+            long = location.long,
+            lat = location.lat,
+            map_id = new_map,
+        )
+        new_location.save()
+
+        return redirect('homemap', map_id)
     
 
 # register
