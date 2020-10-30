@@ -24,17 +24,11 @@
                     <div class="ui vertical menu">
 
                         {% for map in maps %}
-                            <a class = "item">
+                            <a class = "item" href="">
                                 {{ map.name }}
                             </a>
                         {% endfor %}
 
-
-                        {% if profile.user_id == user.id %}
-                        <a class = "active item" id="createMap">
-                            create a new map
-                        </a>
-                        {% endif %}
                     </div>
                 </div>
 
@@ -45,34 +39,7 @@
 
 
                 <div class="three wide column" style="margin-top: 60px; margin-left: 10px;">
-                    {% if user.is_authenticated %}
-                        {% if profile.user_id == user.id %}
-                            <h2>Add this place!</h2>
-                            <form class="ui form" action="{% url 'create_location' current_map.id %}" method="POST">
-                                {% csrf_token %}
-
-                                <div class="field">
-                                    <label>Location Name</label>
-                                    <input type="text" name="name" required/>
-                                </div>
-
-                                <div class='field'>
-                                    <label>Description</label>
-                                    <textarea name="description" style="resize: none" required></textarea>
-                                </div>
-
-                                <input type="hidden" id="longinput" name="long" value="">
-                                <input type="hidden" id="latinput" name="lat" value="">
-
-                                <button class="ui button" type="submit">Submit</button>
-                            </form>
-                        {%else%}
-                            <h5>{{current_map.description}}</h5>
-                        {% endif %}
-
-                        {% else %}
-                            <h5>{{current_map.description}}</h5>
-                    {% endif %}
+                    <h5>{{current_map.description}}</h5>
                 </div>
 
         </div>
@@ -151,36 +118,6 @@
                 .addTo(map);
         });
 
-        //create map modal
-        $(function(){
-            $("#createMap").click(function(){
-            $(".createMap").modal('show');
-            });
-            $(".createMap").modal({
-                closable: true
-            });
-        });
-
     </script>
-
-        <div class="ui modal createMap" style="padding: 10px;">
-        
-        <form class="ui small form" action="{% url 'create_map' %}" method="POST">
-        {% csrf_token %}
-        <h2 class='ui modal-header'>Create a new map</h2>
-            <div class="ui modal-body">
-                <div class="field">
-                    <label>Name</label>
-                    <input type="text" name="name">
-                </div>
-                <div class="field">
-                    <label>Description</label>
-                    <textarea name="description" style="resize: none" required></textarea>
-                </div>
-                <button class="ui button" type="submit" style="margin:10px;">Submit</button>
-            </div>
-        </form>
-
-    </div>
 
 {% endblock %}

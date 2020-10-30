@@ -21,8 +21,18 @@ def home(request):
     profile = user.profile
     maps = profile.map_set.all()
     current_map = maps[0]
-    context = {'maps': maps, 'current_map': current_map}
+    locations = current_map.location_set.all()
+    context = {'maps': maps, 'current_map': current_map, 'profile': profile, 'locations': locations}
     return render(request, 'home.html', context)
+
+def view_map(request, map_id, profile_name):
+    profile = User.objects.get(username=profile_name)
+    profile = Profile.objects.get(user_id=profile.id)
+    current_map = Map.objects.get(id=map_id)
+    profile_maps = profile.map_set.all()
+    locations = current_map.location_set.all()
+    context = {'maps': profile_maps, 'current_map': current_map, 'profile': profile, 'locations': locations}
+    return render(request, 'view.html', context)
 
 # create a new location
 @login_required
