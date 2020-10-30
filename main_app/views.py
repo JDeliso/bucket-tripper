@@ -51,6 +51,16 @@ def create_location(request, map_id):
         return redirect('home')
 
 @login_required
+def delete_location(request, location_id):
+    doomed_location = Location.objects.get(id=location_id)
+
+    if request.user.id == doomed_location.map_id.user_id:
+        doomed_location.delete()
+    else:
+        return redirect('home')
+    return redirect('home')
+
+@login_required
 def create_map(request):
     if request.method == "POST":
 

@@ -94,10 +94,7 @@
             center: [0, 30],
             zoom: 1.3,
             renderWorldCopies: true,
-            dragRotate: false,
             scrollZoom: false,
-            dragPan: false,
-            maxZoom: 1.3,
         });
 
         var geocoder = new MapboxGeocoder({
@@ -108,14 +105,15 @@
 
         
         map.addControl(geocoder);
-        map.on('moveend', function(e) {
+        map.on('load', function(e) {
+            geocoder.on('result', function(e){
 
-            var coord = map.getCenter();
-            console.log(coord);
-            document.getElementById('longinput').value = coord.lng;
-            document.getElementById('latinput').value = coord.lat;
+                var coord = geocoder.mapMarker.getLngLat();
+                document.getElementById('longinput').value = coord.lng;
+                document.getElementById('latinput').value = coord.lat;
+            });
             
-        })
+        });
 
          var geojson = {
             type: 'FeatureCollection',
@@ -130,7 +128,8 @@
                     },
                     properties: {
                         title: '{{location.name}}',
-                        description: "{{location.description}}",
+                        description: '{{location.description}}',
+                        id: '{{ location.id }}'
                     }
                 },
                 {% endfor %}
@@ -147,22 +146,44 @@
             new mapboxgl.Marker(el)
                 .setLngLat(marker.geometry.coordinates)
                 .setPopup(new mapboxgl.Popup({ offset: 25 })
-                .setHTML('<h1>' + marker.properties.title + '</h1><p>' + marker.properties.description + '</p>'))
+                .setHTML('<h1>' + marker.properties.title + '</h1><p>' + marker.properties.description + `</p><button class="ui button" id="edit${marker.properties.id}">Edit</button><a class="ui button" href="/location/delete/${marker.properties.id}">DELETE</a>`))
                 .addTo(map);
         });
 
         //create map modal
         $(function(){
             $("#createMap").click(function(){
-            $(".createMap").modal('show');
+                $(".createMap").modal('show');
             });
             $(".createMap").modal({
                 closable: true
             });
         });
 
-    </script>
+        //delete modal
+        {% for location in locations %}
+            $(function(){
+                $("#delete{{location.id}}").click(function(){
+                    $(".delete{{location.id}}").modal('show');
+                });
+                $(".delete{{location.id}}").modal({
+                    closable: true
+                });
+            });
 
+        // edit modal
+            $(function(){
+                $("#edit{{location.id}}").click(function(){
+                    $(".edit{{location.id}}").modal('show');
+                });
+                $(".edit{{location.id}}").modal({
+                    closable: true
+                });
+            });
+        {%endfor%}
+
+    </script>
+        {% comment %} CREATE MAP MODAL {% endcomment %}
         <div class="ui modal createMap" style="padding: 10px;">
         
         <form class="ui small form" action="{% url 'create_map' %}" method="POST">
@@ -183,4 +204,24 @@
 
     </div>
 
+    {% comment %} delete modal {% endcomment %}
+    {% for location in locations %}
+        <div class="ui modal delete{{ location.id }}">
+            <h2 class="ui modal-header">Delete?</h2>
+            <div class="ui modal body">
+                <a class="ui button" href="/location/delete/{{location.id}}">DELETE</a>
+            </div>
+        </div>
+
+    {% comment %} edit modal {% endcomment %}
+        <div class="ui modal edit{{ location.id }}">
+            <h2 class="ui modal-header">Edit</h2>
+            <div class="ui modal body">
+
+
+
+                <a class="ui button" href="/location/{{ location.id }}/edit">Submit</a>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

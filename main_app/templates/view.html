@@ -24,7 +24,7 @@
                     <div class="ui vertical menu">
 
                         {% for map in maps %}
-                            <a class = "item" href="">
+                            <a class = "item" href="/{{ profile.user.username}}/maps/{{map.id}}">
                                 {{ map.name }}
                             </a>
                         {% endfor %}
