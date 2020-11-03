@@ -99,6 +99,20 @@ def edit_map(request, map_id):
                 map = map_form.save()
                 map.save()
         return redirect('homemap', map_id)
+
+@login_required
+def delete_map(request, map_id):
+    doomed_map = Map.objects.get(id=map_id)
+
+    if request.user.username == doomed_map.user.user.username:
+        if request.POST['delete_text'] == 'delete':
+            doomed_map.delete()
+
+    return redirect('home')
+        
+
+
+
 @login_required
 def steal_location(request, location_id, map_id):
     location = Location.objects.get(id=location_id)

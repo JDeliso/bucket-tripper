@@ -14,4 +14,5 @@ urlpatterns = [
     path('<str:profile_name>/maps/<int:map_id>', views.view_map, name="view_map"),
     path('location/<int:location_id>/<int:map_id>', views.steal_location, name="steal_location"),
     path('maps/edit/<int:map_id>', views.edit_map, name="edit_map"),
+    path('maps/delete/<int:map_id>', views.delete_map, name="delete_map"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

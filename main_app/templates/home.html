@@ -230,12 +230,12 @@
 
     {% for map in maps%}
 
-        <div class="ui modal editMap{{ map.id }}">
+        <div class="ui modal editMap{{ map.id }}" style="padding: 10px;">
             <h2 class="ui modal-header">Edit Map</h2>
 
-            <form class="ui small form" action="{% url 'edit_map' map.id %}" method="POST">
+            <div class="ui modal-body">
+            <form class="ui small form" action="/maps/delete/{{map.id}}" method="POST">
             {% csrf_token %}
-                <div class="ui modal-body">
                     <div class="field">
                         <label>Name</label>
                         <input type="text" name="name" value="{{map.name}}">
@@ -245,11 +245,22 @@
                         <textarea name="description" style="resize: none" required>{{map.description}}</textarea>
                     </div>
                     <button class="ui button" type="submit" style="margin:10px;">Submit</button>
-                </div>
+        
             </form>
+
             <hr>
 
-            
+            <h2 class="ui modal-header">Delete map?</h2>
+                <form class="ui small form" action="{% url 'delete_map' map.id %}" method="POST">
+                {% csrf_token %}
+                    <div class="field">
+                        <label>Type "delete" to delete map</label>
+                        <input type="text" name="delete_text">
+                    </div>
+                    <button class="ui primary red button" type="submit">DELETE</button>
+
+                </form>
+            </div>
 
         </div>
 
