@@ -115,7 +115,7 @@
             new mapboxgl.Marker(el)
                 .setLngLat(marker.geometry.coordinates)
                 .setPopup(new mapboxgl.Popup({ offset: 25 })
-                .setHTML('<h1>' + marker.properties.title + '</h1><p>' + marker.properties.description + `</p><div class="ui compact menu"><div class="ui simple dropdown item">Add to map<i class="dropdown icon"></i><div class="menu">{% for map in yourmaps %}<form type="hidden" method="POST" action="/location/${marker.properties.id}/{{map.id}}">{% csrf_token %} <input type="submit" value="{{map.name}}" class="ui item"></input></form>{%endfor%} </div></div>`))
+                .setHTML('<h1>' + marker.properties.title + '</h1><p>' + marker.properties.description + `</p><div class="ui compact menu"><div class="ui simple dropdown item">Add to map<i class="dropdown icon"></i><div class="menu">{% for map in yourmaps %}<a class="item" href="/location/${marker.properties.id}/{{map.id}}">{{ map.name }}</a>{%endfor%} </div></div>`))
                 .addTo(map);
         });
 

@@ -28,23 +28,20 @@
 </head>
 <body>
 
-    <div class="ui top fixed menu">
-        <div class="header item">
+    <div class="ui inverted top fixed menu">
+        <a class="header item">
             Bucket Tripper
-        </div>
+        </a>
         <a class="item">
             Blog
         </a>
         <a class="item">
-            Follow
-        </a>
-        <a class="item">
-            Locations
+            About
         </a>
         <div class="right menu">
 
             {% if user.is_authenticated %}
-                <a class="item" href="/myprofile/"><span style="text-transform:uppercase">{{ user.username }}</span></a>
+                <a class="item" href="/home/"><span style="text-transform:uppercase">{{ user.username }}</span></a>
                 <a class="item" href="{% url 'logout' %}">LOGOUT</a>
             {% else %} 
                 <a class="item" id="login" type="button">LOG-IN</a>

@@ -67,10 +67,11 @@ def delete_location(request, location_id):
     doomed_location = Location.objects.get(id=location_id)
 
     if request.user.id == doomed_location.map_id.user_id:
+        current_map = doomed_location.map_id
         doomed_location.delete()
     else:
         return redirect('home')
-    return redirect('home')
+    return redirect('homemap', current_map.id)
 
 @login_required
 def create_map(request):
@@ -88,20 +89,32 @@ def create_map(request):
         return redirect('home')
 
 @login_required
-def steal_location(request, location_id, map_id):
-    if request.method == "POST":
-        location = Location.objects.get(id=location_id)
-        new_map = Map.objects.get(id=map_id)
-        new_location = Location.objects.create(
-            name = location.name,
-            description = location.description,
-            long = location.long,
-            lat = location.lat,
-            map_id = new_map,
-        )
-        new_location.save()
+def edit_map(request, map_id):
+    map = Map.objects.get(id=map_id)
 
+    if request.method == 'POST':
+        map_form = Map_Form(request.POST, instance=map)
+        if map_form.is_valid():
+            if request.user.username == map.user.user.username:
+                map = map_form.save()
+                map.save()
         return redirect('homemap', map_id)
+@login_required
+def steal_location(request, location_id, map_id):
+    location = Location.objects.get(id=location_id)
+    new_map = Map.objects.get(id=map_id)
+    new_location = Location.objects.create(
+        name = location.name,
+        description = location.description,
+        long = location.long,
+        lat = location.lat,
+        map_id = new_map,
+    )
+    new_location.save()
+
+    print(location.map_id.id)
+    print(location.map_id.user.user.username)
+    return redirect('view_map', location.map_id.user.user.username, location.map_id.id)
     
 
 # register

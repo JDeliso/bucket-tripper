@@ -18,15 +18,21 @@
 
 
 
-        <div class ="ui twelve wide centered grid">
+        <div class ="ui centered grid">
 
                 <div class="two wide column" style="margin-top: 60px; position: fixed; left: 0; min-width:10vh;"> 
                     <div class="ui vertical menu">
 
                         {% for map in maps %}
-                            <a class = "item" href="/home/{{map.id}}">
-                                {{ map.name }}
-                            </a>
+
+                            <div class="item">
+                                <a class = "item" href="/home/{{map.id}}">
+                                    {{ map.name }}
+                                </a>
+                                <a id="editMap{{map.id}}" style="cursor: pointer"><i class="ui edit icon"></i></a>
+                            </div>
+
+
                         {% endfor %}
 
 
@@ -44,28 +50,32 @@
                 </div>
 
 
-                <div class="three wide column" style="margin-top: 60px; margin-left: 10px;">
+                <div class="three wide column" style="margin-top: 60px; margin-left: 10px; margin-right: -10em;">
                     {% if user.is_authenticated %}
                         {% if profile.user_id == user.id %}
-                            <h2>Add this place!</h2>
-                            <form class="ui form" action="{% url 'create_location' current_map.id %}" method="POST">
-                                {% csrf_token %}
+                            <div class="ui card">
+                                <div class="content">
+                                    <h2>Add this place!</h2>
+                                    <form class="ui form" action="{% url 'create_location' current_map.id %}" method="POST">
+                                        {% csrf_token %}
 
-                                <div class="field">
-                                    <label>Location Name</label>
-                                    <input type="text" name="name" required/>
+                                        <div class="field">
+                                            <label>Location Name</label>
+                                            <input type="text" name="name" required/>
+                                        </div>
+
+                                        <div class='field'>
+                                            <label>Description</label>
+                                            <textarea name="description" style="resize: none" required></textarea>
+                                        </div>
+
+                                        <input type="hidden" id="longinput" name="long" value="">
+                                        <input type="hidden" id="latinput" name="lat" value="">
+
+                                        <button class="ui button" type="submit">Submit</button>
+                                    </form>
                                 </div>
-
-                                <div class='field'>
-                                    <label>Description</label>
-                                    <textarea name="description" style="resize: none" required></textarea>
-                                </div>
-
-                                <input type="hidden" id="longinput" name="long" value="">
-                                <input type="hidden" id="latinput" name="lat" value="">
-
-                                <button class="ui button" type="submit">Submit</button>
-                            </form>
+                            </div>
                         {%else%}
                             <h5>{{current_map.description}}</h5>
                         {% endif %}
@@ -175,8 +185,20 @@
                     closable: true
                 });
             });
+
         {%endfor%}
 
+        {% for map in maps%}
+        //edit map modal
+            $(function(){
+                $("#editMap{{map.id}}").click(function(){
+                    $(".editMap{{map.id}}").modal('show');
+                });
+                $(".editMap{{map.id}}").modal({
+                    closable: true
+                });
+            });
+        {% endfor %}
     </script>
         {% comment %} CREATE MAP MODAL {% endcomment %}
         <div class="ui modal createMap" style="padding: 10px;">
@@ -199,24 +221,38 @@
 
     </div>
 
-    {% comment %} delete modal {% endcomment %}
     {% for location in locations %}
-        <div class="ui modal delete{{ location.id }}">
-            <h2 class="ui modal-header">Delete?</h2>
-            <div class="ui modal body">
-                <a class="ui button" href="/location/delete/{{location.id}}">DELETE</a>
-            </div>
-        </div>
-
     {% comment %} edit modal {% endcomment %}
         <div class="ui modal edit{{ location.id }}">
             <h2 class="ui modal-header">Edit</h2>
-            <div class="ui modal body">
-
-
-
-                <a class="ui button" href="/location/{{ location.id }}/edit">Submit</a>
-            </div>
         </div>
     {% endfor %}
+
+    {% for map in maps%}
+
+        <div class="ui modal editMap{{ map.id }}">
+            <h2 class="ui modal-header">Edit Map</h2>
+
+            <form class="ui small form" action="{% url 'edit_map' map.id %}" method="POST">
+            {% csrf_token %}
+                <div class="ui modal-body">
+                    <div class="field">
+                        <label>Name</label>
+                        <input type="text" name="name" value="{{map.name}}">
+                    </div>
+                    <div class="field">
+                        <label>Description</label>
+                        <textarea name="description" style="resize: none" required>{{map.description}}</textarea>
+                    </div>
+                    <button class="ui button" type="submit" style="margin:10px;">Submit</button>
+                </div>
+            </form>
+            <hr>
+
+            
+
+        </div>
+
+    {% endfor %}
+
 {% endblock %}
