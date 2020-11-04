@@ -62,6 +62,17 @@ def create_location(request, map_id):
             new_location.save()
         return redirect('homemap', current_map.id)
 
+def edit_location(request, location_id):
+    location = Location.objects.get(id=location_id)
+
+    if request.method == "POST":
+        edit_location_form = Location_Edit_Form(request.POST, instance=location)
+        if edit_location_form.is_valid():
+            location = edit_location_form.save()
+            location.save()
+        
+        return redirect("homemap", location.map_id.id)
+
 @login_required
 def delete_location(request, location_id):
     doomed_location = Location.objects.get(id=location_id)
