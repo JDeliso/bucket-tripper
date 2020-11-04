@@ -12,7 +12,7 @@ from .models import *
 # Create your views here.
 # splash view
 def splash(request):
-    return render(request, 'home.html')
+    return render(request, 'splash.html')
 
 # home view
 @login_required
