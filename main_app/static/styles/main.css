@@ -1,0 +1,13 @@
+body {
+    height: 100%;
+    background-color: #e6e6fa !important;
+}
+
+
+.marker {
+    background-image: url('/media/static/marker.png');
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
