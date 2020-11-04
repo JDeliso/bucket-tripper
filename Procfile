@@ -1,1 +1,1 @@
-web: gunicorn BucketTripper.wsgi
+web: gunicorn bucket-tripper.wsgi
