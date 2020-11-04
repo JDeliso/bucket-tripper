@@ -10,6 +10,7 @@ urlpatterns = [
     path('accounts/signup', views.signup, name='signup'),
     path('location/create/<int:map_id>', views.create_location, name='create_location'),
     path('location/delete/<int:location_id>', views.delete_location, name='delete_location'),
+    path('location/edit/<int:location_id>', views.edit_location, name='edit_location'),
     path('maps/create/', views.create_map, name="create_map"),
     path('<str:profile_name>/maps/<int:map_id>', views.view_map, name="view_map"),
     path('location/<int:location_id>/<int:map_id>', views.steal_location, name="steal_location"),

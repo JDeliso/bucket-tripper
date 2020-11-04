@@ -22,3 +22,8 @@ class Location_Form(ModelForm):
         model = Location
         fields = ('name', 'description', 'long', 'lat')
 
+class Location_Edit_Form(ModelForm):
+    class Meta:
+        model = Location
+        fields = ('name', 'description')
+
