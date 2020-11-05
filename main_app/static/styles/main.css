@@ -5,7 +5,7 @@ body {
 
 
 .marker {
-    background-image: url('/media/static/marker.png');
+    background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
     background-size: cover;
     width: 30px;
     height: 30px;
