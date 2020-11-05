@@ -46,6 +46,17 @@ def view_map(request, map_id, profile_name):
     context = {'maps': profile_maps, 'current_map': current_map, 'profile': profile, 'locations': locations, 'yourmaps': your_maps}
     return render(request, 'view.html', context)
 
+@login_required
+def view_profile(request, profile_name):
+    profile = User.objects.get(username=profile_name)
+    profile = Profile.objects.get(user_id=profile.id)
+    profile_maps = profile.map_set.all()
+    current_map = profile_maps[0]
+    locations = current_map.location_set.all()
+    your_maps = request.user.profile.map_set.all()
+    context = {'maps': profile_maps, 'current_map': current_map, 'profile': profile, 'locations': locations, 'yourmaps': your_maps}
+    return render(request, 'view.html', context)
+
 # create a new location
 @login_required
 def create_location(request, map_id):
@@ -97,7 +108,7 @@ def create_map(request):
 
         new_map.save()
 
-        return redirect('home')
+        return redirect('homemap', new_map.id)
 
 @login_required
 def edit_map(request, map_id):
