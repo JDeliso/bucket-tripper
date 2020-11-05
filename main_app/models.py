@@ -1,4 +1,4 @@
-from djongo import models
+from django.db import models
 from django.contrib.auth.models import User
 
 import datetime
@@ -15,7 +15,7 @@ class Profile(models.Model):
 
 class Map(models.Model):
     name = models.CharField(max_length=100, default="default")
-    description = models.TextField(max_length=1000, default="Your first map!")
+    description = models.TextField(max_length=5000, default="Your first map!")
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
 class Location(models.Model):

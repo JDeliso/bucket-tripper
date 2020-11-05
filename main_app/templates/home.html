@@ -53,7 +53,7 @@
                 <div class="three wide two row column" style="margin-top: 60px; margin-left: 10px; margin-right: -10em;">
                     {% if user.is_authenticated %}
                         {% if profile.user_id == user.id %}
-                            <div class="ui card">
+                            <div class="ui card" style="">
                                 <div class="content">
                                     <h2>Add this place!</h2>
                                     <form class="ui form" action="{% url 'create_location' current_map.id %}" method="POST">
@@ -258,7 +258,7 @@
             <h2 class="ui modal-header">Edit Map</h2>
 
             <div class="ui modal-body">
-            <form class="ui small form" action="/maps/delete/{{map.id}}" method="POST">
+            <form class="ui small form" action="/maps/edit/{{map.id}}" method="POST">
             {% csrf_token %}
                     <div class="field">
                         <label>Name</label>
